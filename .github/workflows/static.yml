@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPAT - Semana Interna de Prevenção de Acidentes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            padding: 20px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        .logo-container img {
+            height: 100px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-container img:hover {
+            transform: scale(1.05);
+        }
+        
+        .header {
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #1a2a6c;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header p {
+            color: #555;
+            font-size: 1.2rem;
+        }
+        
+        .mascot-container {
+            position: relative;
+            height: 250px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .mascot-image {
+            max-width: 100%;
+            max-height: 230px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+            transition: all 0.5s ease;
+            border: none;
+            background: transparent;
+        }
+        
+        .mascot-shadow {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .message-container {
+            min-height: 150px;
+            height: auto;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #1a2a6c;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .message {
+            font-size: 1.3rem;
+            color: #333;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            text-align: center;
+            padding: 5px;
+        }
+        
+        .message.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .highlight {
+            color: #1a2a6c;
+            font-weight: bold;
+            font-size: 1.4rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background-color: #1a2a6c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:hover {
+            background-color: #ff9900;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-active {
+            background-color: #ff9900;
+        }
+        
+        .progress-container {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #1a2a6c, #ff9900);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 5px;
+        }
+        
+        .safety-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .safety-icons i {
+            font-size: 1.8rem;
+            color: #1a2a6c;
+            background-color: #ff9900;
+            padding: 8px;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .message {
+                font-size: 1.1rem;
+            }
+            
+            .logo-container img {
+                height: 80px;
+            }
+            
+            .mascot-container {
+                height: 200px;
+            }
+            
+            .mascot-image {
+                max-height: 180px;
+            }
+            
+            .message-container {
+                min-height: 130px;
+                padding: 10px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .auto-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 50px;
+        }
+        
+        .auto-toggle span {
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #1a2a6c;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo da Empresa" onerror="this.style.display='none';">
+        </div>
+        
+        <div class="header">
+            <h1>SIPAT 2025</h1>
+            <p>Semana Interna de Prevenção de Acidentes do Trabalho</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        
+        <div class="mascot-container">
+            <img src="mascote.png" class="mascot-image" id="mascot-image" alt="Mascote SIPAT" onerror="this.style.display='none'; document.getElementById('placeholder').style.display='block';">
+            <div class="mascot-shadow"></div>
+            
+            <div id="placeholder" style="display: none; text-align: center; color: #555;">
+                <i class="fas fa-image" style="font-size: 3rem; margin-bottom: 15px; color: #ccc;"></i>
+                <p>Imagem do mascote não encontrada.</p>
+                <p>Certifique-se de que o arquivo está na mesma pasta com o nome "mascote.png"</p>
+            </div>
+        </div>
+        
+        <div class="message-container">
+            <div class="message active" id="message-1">
+                <p>Olá! Eu sou o <span class="highlight">Piá da Segurança</span>!</p>
+            </div>
+            <div class="message" id="message-2">
+                <p>Você sabe o que é a <span class="highlight">SIPAT</span>?</p>
+            </div>
+            <div class="message" id="message-3">
+                <p>A SIPAT é a <span class="highlight">Semana Interna de Prevenção de Acidentes do Trabalho</span>.</p>
+            </div>
+            <div class="message" id="message-4">
+                <p>É um evento <span class="highlight">obrigatório</span> que promove a conscientização sobre segurança e saúde no trabalho.</p>
+            </div>
+            <div class="message" id="message-5">
+                <p>E temos um compromisso importante no dia <span class="highlight">15/09</span>!</p>
+            </div>
+            <div class="message" id="message-6">
+                <p>Participe da nossa SIPAT e aprenda a prevenir acidentes!</p>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="prevBtn">Anterior</button>
+            <button class="btn" id="nextBtn">Próximo</button>
+        </div>
+        
+        <div class="safety-icons">
+            <i class="fas fa-hard-hat"></i>
+            <i class="fas fa-first-aid"></i>
+            <i class="fas fa-exclamation-triangle"></i>
+            <i class="fas fa-helmet-safety"></i>
+        </div>
+        
+        <div class="auto-toggle">
+            <span>Modo automático</span>
+            <label class="switch">
+                <input type="checkbox" id="autoToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.message');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const progressBar = document.getElementById('progress');
+            const mascotImage = document.getElementById('mascot-image');
+            const autoToggle = document.getElementById('autoToggle');
+            
+            let currentMessage = 0;
+            const totalMessages = messages.length;
+            let autoMode = false;
+            let autoInterval;
+            
+            // Inicializar a primeira mensagem
+            showMessage(currentMessage);
+            updateProgress();
+            updateButtons();
+            
+            // Adicionar animação à imagem do mascote
+            if (mascotImage.style.display !== 'none') {
+                mascotImage.style.animation = 'float 4s ease-in-out infinite';
+            }
+            
+            // Controle do modo automático
+            autoToggle.addEventListener('change', function() {
+                autoMode = this.checked;
+                if (autoMode) {
+                    startAutoMode();
+                    nextBtn.disabled = true;
+                    prevBtn.disabled = true;
+                    nextBtn.style.opacity = '0.5';
+                    prevBtn.style.opacity = '0.5';
+                } else {
+                    stopAutoMode();
+                    nextBtn.disabled = false;
+                    prevBtn.disabled = false;
+                    nextBtn.style.opacity = '1';
+                    prevBtn.style.opacity = '1';
+                }
+            });
+            
+            function startAutoMode() {
+                stopAutoMode(); // Garantir que não há intervalos duplicados
+                autoInterval = setInterval(function() {
+                    nextMessage();
+                }, 3000); // Mudar a cada 3 segundos
+            }
+            
+            function stopAutoMode() {
+                if (autoInterval) {
+                    clearInterval(autoInterval);
+                    autoInterval = null;
+                }
+            }
+            
+            function nextMessage() {
+                if (currentMessage < totalMessages - 1) {
+                    currentMessage++;
+                } else {
+                    currentMessage = 0;
+                }
+                showMessage(currentMessage);
+                updateProgress();
+                updateButtons();
+                
+                // Animar o mascote
+                if (mascotImage.style.display !== 'none') {
+                    mascotImage.style.animation = 'none';
+                    setTimeout(() => {
+                        mascotImage.style.animation = 'pulse 0.5s ease';
+                        setTimeout(() => {
+                            mascotImage.style.animation = 'float 4s ease-in-out infinite';
+                        }, 500);
+                    }, 10);
+                }
+            }
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentMessage < totalMessages - 1) {
+                    currentMessage++;
+                } else {
+                    currentMessage = 0;
+                }
+                showMessage(currentMessage);
+                updateProgress();
+                updateButtons();
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentMessage > 0) {
+                    currentMessage--;
+                } else {
+                    currentMessage = totalMessages - 1;
+                }
+                showMessage(currentMessage);
+                updateProgress();
+                updateButtons();
+            });
+            
+            function showMessage(index) {
+                messages.forEach(message => {
+                    message.classList.remove('active');
+                });
+                
+                messages[index].classList.add('active');
+            }
+            
+            function updateProgress() {
+                const progress = ((currentMessage + 1) / totalMessages) * 100;
+                progressBar.style.width = progress + '%';
+            }
+            
+            function updateButtons() {
+                nextBtn.textContent = currentMessage === totalMessages - 1 ? 'Recomeçar' : 'Próximo';
+            }
+        });
+    </script>
+</body>
+</html>
